@@ -13,6 +13,6 @@ public class GlobalTimelineController {
 	@RequestMapping(value = "/timeline")
 	public String greetingSubmit(@ModelAttribute Login login, Model model) {
 		model.addAttribute("login", login);
-		return "timeline";
+		return "GlobalTimeline";
 	}
 }

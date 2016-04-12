@@ -1,3 +1,4 @@
+
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -9,88 +10,59 @@
 <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
 	rel="stylesheet" media="screen" />
 
-<style>
-body {
-	padding-top: 40px;
-	padding-bottom: 40px;
-	background-color: #fff;
-}
-
-.form-signin {
-	max-width: 330px;
-	padding: 15px;
-	margin: 0 auto;
-}
-
-.form-signin .form-signin-heading, .form-signin .checkbox {
-	margin-bottom: 10px;
-}
-
-.form-signin .checkbox {
-	font-weight: normal;
-}
-
-.form-signin .form-control {
-	position: relative;
-	height: auto;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	box-sizing: border-box;
-	padding: 10px;
-	font-size: 16px;
-}
-
-.form-signin .form-control:focus {
-	z-index: 2;
-}
-
-.form-signin #username, .form-signin .input-group-addon {
-	margin-bottom: -1px;
-	border-bottom-right-radius: 0;
-	border-bottom-left-radius: 0;
-}
-.form-signin .input-group-addon { 
-	border-bottom: 0;
-}
-
-.form-signin #password {
-	margin-bottom: 10px;
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
-}
-</style>
+<link rel="stylesheet" href="css/login.css" />
 </head>
+
 <body>
+	<div class="text-center" style="padding: 50px 0">
+		<div class="logo">login</div>
 
-	<div class="container">
+		<div class="login-form-1">
 
-		<form class="form-signin" action="#" th:action="@{/timeline}"
-			th:object="${login}" method="post">
-			<h2 class="form-signin-heading">Please sign in</h2>
-			<div class="input-group">
-				<span class="input-group-addon" id="sizing-addon1">@</span> <input
-					id = "username"
-					type="text" class="form-control" placeholder="Username"
-					aria-describedby="sizing-addon1" th:field="*{username}"
-					required="true" autofocus="true" />
-			</div>
-			<input type="password" id="password" class="form-control"
-				placeholder="Password" th:field="*{password}" required="true" />
-			<div class="checkbox">
-				<label> <input type="checkbox" value="remember-me"
-					th:field="*{remember}" /> Remember me
-				</label>
-			</div>
-			<button class="btn btn-lg btn-primary btn-block" type="submit">Sign
-				in</button>
-		</form>
+			<form id="login-form" class="text-left" action="#"
+				th:action="@{/timeline}" th:object="${login}" method="post">
+
+				<div class="login-form-main-message"></div>
+
+				<div class="main-login-form">
+					<div class="login-group">
+						<div class="form-group">
+							<label for="lg_username" class="sr-only">Username</label> <input
+								type="text" class="form-control" id="lg_username"
+								name="lg_username" placeholder="username" th:field="*{username}" />
+						</div>
+						<div class="form-group">
+							<label for="lg_password" class="sr-only">Password</label> <input
+								type="password" class="form-control" id="lg_password"
+								name="lg_password" placeholder="password" th:field="*{password}" />
+						</div>
+						<div class="form-group login-group-checkbox">
+							<input type="checkbox" id="lg_remember" name="lg_remember"
+								th:field="*{remember}" /> <label for="lg_remember">remember</label>
+						</div>
+					</div>
+					<button type="submit" class="login-button">
+						<i class="glyphicon glyphicon-chevron-right"></i>
+					</button>
+				</div>
+				<div class="etc-login-form">
+					<p>
+						forgot your password? <a href="#">click here</a>
+					</p>
+					<p>
+						new user? <a href="#">create new account</a>
+					</p>
+				</div>
+			</form>
+		</div>
 
 	</div>
-
+	
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 	<script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+
 </body>
 </html>

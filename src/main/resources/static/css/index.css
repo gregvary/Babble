@@ -1,0 +1,125 @@
+body {
+    background-color: #f3f3f3;
+}
+.jumbotron {
+    background-color: #FFFFFF;
+    border: solid thin #dadada;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    padding-top: 30px !important;
+    padding-bottom: 30px !important;
+}
+.navbar {
+    background-color: #FFFFFF;
+}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:focus, .navbar-default .navbar-nav>.active>a:hover {
+    background-color: #FFFFFF;
+    border-bottom: solid medium #8884fb;
+}
+.glyphicon {
+    margin-right: 5px;
+}
+.btn-default {
+    background-color: #8884fb;
+    color: #FFFFFF;
+    border-color: #8884fb;
+}
+.btn-default:hover {
+    background-color: #FFFFFF;
+    color: #8884fb;
+    border-color: #8884fb;
+}
+
+/**
+TWEET
+**/
+#tweet-container {
+    background-color: #FFFFFF;
+}
+#send-tweet-container {
+    background-color: #E5F2F7;
+    padding-top: 15px;
+    padding-left: 10px;
+}
+#send-tweet-container-input {
+    display: inline-block;
+    width: 50%
+}
+#send-tweet-container-button {
+    display: inline-block;
+    margin-left:20px;
+    vertical-align:top
+}
+.tweet {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border: solid thin #dadada;
+}
+.tweet-user {
+    margin-top: 0px;
+    font-weight: bold;
+}
+.tweet-time {
+    font-size: 12pt !important;
+    color: #636363;
+}
+
+/**
+USER
+**/
+.user {
+    border: solid thin #dadada;
+    padding:10px;
+}
+.user-img {
+    border-radius: 10px;
+    margin-right: 20px;
+    display: inline-block;
+}
+.user-name {
+    display: inline-block;
+    font-weight: bold;
+}
+.user-bio {
+    margin-top:10px;
+}
+.user-info {
+    font-size: 12pt !important;
+    color: #636363;
+}
+
+/**
+SEARCH
+**/
+#searchresults-container {
+    background-color: #E5F2F7;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+#searchresults-container p {
+    margin: 0;
+}
+.search-user {
+    border: solid thin #dadada;
+    padding:10px;
+}
+.search-user-img {
+    border-radius: 10px;
+    margin-right: 20px;
+    display: inline-block;
+}
+.search-user-name {
+    display: inline-block;
+    font-weight: bold;
+}
+.search-user-bio {
+    margin-top:10px;
+}
+.search-user-info {
+    font-size: 12pt !important;
+    color: #636363;
+}
+
+

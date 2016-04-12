@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class LoginController {
 
-	@RequestMapping(value = "/login")
+	@RequestMapping(value = "/")
 	public String greetingSubmit(@ModelAttribute Login login, Model model) {
 		model.addAttribute("login", login != null ? login : new Login());
 		return "login";

@@ -1,7 +1,5 @@
 package de.hska.vs2.beschte.Babble.login;
 
-import org.springframework.stereotype.Component;
-
 public class Login {
 
     private String username;
