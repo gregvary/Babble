@@ -9,8 +9,7 @@
 <!-- The above 3 meta tags *must* come first in the head -->
 <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
 	rel="stylesheet" media="screen" />
-
-<link rel="stylesheet" href="css/login.css" />
+<link rel="stylesheet" href="/css/login.css" />
 </head>
 
 <body>
@@ -20,7 +19,7 @@
 		<div class="login-form-1">
 
 			<form id="login-form" class="text-left" action="#"
-				th:action="@{/timeline}" th:object="${login}" method="post">
+				th:action="@{/timeline/123}" th:object="${login}" method="post">
 
 				<div class="login-form-main-message"></div>
 

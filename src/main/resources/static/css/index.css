@@ -29,6 +29,16 @@ body {
     color: #8884fb;
     border-color: #8884fb;
 }
+#rcont {
+	width: 35%;
+}
+
+/**
+LOGIN
+**/
+.log {
+	padding-left: 15px;
+}
 
 /**
 TWEET
@@ -92,34 +102,36 @@ USER
 /**
 SEARCH
 **/
-#searchresults-container {
-    background-color: #E5F2F7;
-    padding-top: 10px;
-    padding-bottom: 10px;
+#imaginary_container {
+	width: 60%;
+}
+.stylish-input-group .input-group-addon{
+    background: white !important;
+}
+.stylish-input-group .form-control{
+    border-right:0;
+    box-shadow:0 0 0;
+    border-color:#ccc;
+}
+.stylish-input-group button{
+    border:0;
+    background:transparent;
+}
+
+
+@media only screen and (max-width: 767px) {
+
+  #rcont{
+    width: 100%;
     padding-left: 10px;
-}
-#searchresults-container p {
-    margin: 0;
-}
-.search-user {
-    border: solid thin #dadada;
-    padding:10px;
-}
-.search-user-img {
-    border-radius: 10px;
-    margin-right: 20px;
-    display: inline-block;
-}
-.search-user-name {
-    display: inline-block;
-    font-weight: bold;
-}
-.search-user-bio {
-    margin-top:10px;
-}
-.search-user-info {
-    font-size: 12pt !important;
-    color: #636363;
-}
+  }
 
+  .log {
+	padding-left: 5px;
+	padding-top: 25px;
+  }
+  #imaginary_container {
+	margin-bottom: 10px;
+  }
 
+}
