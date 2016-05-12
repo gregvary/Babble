@@ -1,0 +1,96 @@
+
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Babbel_GT</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- The above 3 meta tags *must* come first in the head -->
+<link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+	rel="stylesheet" media="screen" />
+<link rel="stylesheet" href="/css/index.css" />
+</head>
+<body>
+
+	<div class="container-fluid">
+		<div class="page-header">
+			<nav class="navbar navbar-default navbar-fixed-top">
+				<div class="container navbar-container"
+					style="margin-left: 0; margin-right: 0; width: 100%; box-sizing: border-box">
+
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed"
+							data-toggle="collapse" data-target="#navbar"
+							aria-expanded="false" aria-controls="navbar">
+							<span class="sr-only">Toggle navigation</span> <span
+								class="icon-bar"></span> <span class="icon-bar"></span> <span
+								class="icon-bar"></span>
+						</button>
+					</div>
+
+					<div class="navbar-collapse collapse" id="navbar">
+						<ul class="nav navbar-nav">
+							<li><a href="timeline_user.html" th:href="@{/timeline/123}" ><span
+									class="glyphicon glyphicon-home"></span> Persönliche Timeline</a></li>
+							<li><a href="profile.html" th:href="@{/user/123}"><span
+									class="glyphicon glyphicon-user"></span> Mein Profil</a></li>
+							<li><a href="timeline.html" th:href="@{/timeline}"><span
+									class="glyphicon glyphicon-globe"></span> Globale Timeline</a></li>
+						</ul>
+
+						<form id="rcont" class="navbar-form navbar-right" role="search" th:action="@{/search}"  method="post">
+							<div id="imaginary_container"
+								class="input-group stylish-input-group">
+								<input type="text" class="form-control" placeholder="Search" />
+								<span class="input-group-addon">
+									<button type="submit">
+										<span class="glyphicon glyphicon-search"></span>
+									</button>
+								</span>
+							</div>
+							<a class="log" href="login.html" th:href="@{/}"><span
+								class="glyphicon glyphicon-log-out"></span> Logout</a>
+						</form>
+					</div>
+					<!-- /.navbar-collapse -->
+				</div>
+			</nav>
+		</div>
+
+
+		<div class="jumbotron">
+			<div class="container-fluid">
+				<div class="col-xs-12 col-md-12">
+					<div id="searchresults-container">
+						<p>Suchergebnisse für 'John*'</p>
+					</div>
+					<div class="search-user">
+						<img src="/ref/John_Doe.jpg" alt="profilepicture" width="5%"
+							class="user-img"/>
+						<h3 class="search-user-name">John Doe</h3>
+						<p class="search-user-bio">Lorem ipsum dolor sit amet,
+							consetetur sadipscing elitr, sed diam nonumy eirmod tempor.</p>
+						<p class="search-user-info">Beigetreten 03.02.2015</p>
+					</div>
+					<div class="search-user">
+						<img src="/ref/John_Doe.jpg" alt="profilepicture" width="5%"
+							class="user-img"/>
+						<h3 class="search-user-name">John Smith</h3>
+						<p class="search-user-bio">Sinvidunt ut labore et dolore magna
+							aliquyam erat, sed diam voluptua.</p>
+						<p class="search-user-info">Beigetreten 01.14.2015</p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+	<script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+</body>
+</html>
