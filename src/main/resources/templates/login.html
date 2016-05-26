@@ -19,7 +19,7 @@
 		<div class="login-form-1">
 
 			<form id="login-form" class="text-left" action="#"
-				th:action="@{/timeline/123}" th:object="${login}" method="post">
+				th:action="@{/login}" th:object="${login}" method="post">
 
 				<div class="login-form-main-message"></div>
 
@@ -49,7 +49,7 @@
 						forgot your password? <a href="#">click here</a>
 					</p>
 					<p>
-						new user? <a href="#">create new account</a>
+						new user? <a href="/register">create new account</a>
 					</p>
 				</div>
 			</form>

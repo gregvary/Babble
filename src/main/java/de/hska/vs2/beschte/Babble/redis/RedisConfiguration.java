@@ -31,8 +31,8 @@ public class RedisConfiguration {
 		return stringRedisTemplate;
 	}
 
-	@Bean(name = "redisTemplate")
-	public RedisTemplate<String, User> getRedisTemplate() {
+	@Bean(name = "redisUserTemplate")
+	public RedisTemplate<String, User> getRedisUserTemplate() {
 		RedisTemplate<String, User> redisTemplate = new RedisTemplate<String, User>();
 		redisTemplate.setConnectionFactory(getConnectionFactory());
 		return redisTemplate;

@@ -11,9 +11,7 @@ public class User implements Serializable {
 	private String firstname;
 	private String lastname;
 	
-	public User() {
-
-	}
+	public User() {}
 	
 	public String getId() {
 		return id;
@@ -24,10 +22,10 @@ public class User implements Serializable {
 	}
 
 	public String getUsername() {
-		return username;
+		return username.toLowerCase();
 	}
 	public void setUsername(String username) {
-		this.username = username;
+		this.username = username.toLowerCase();
 	}
 	public String getPassword() {
 		return password;
@@ -47,7 +45,4 @@ public class User implements Serializable {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
-	
-	
-	
 }
