@@ -1,132 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <!-- link rel="icon" href="favicon.ico" -->
 
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-<title>Babbel_GT</title>
-<meta charset="utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<!-- The above 3 meta tags *must* come first in the head -->
-<link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
-	rel="stylesheet" media="screen" />
-<link rel="stylesheet" href="/css/index.css" />
-</head>
-<body>
+    <title>Babble</title>
 
-	<div class="container-fluid">
-		<div class="page-header">
-			<nav class="navbar navbar-default navbar-fixed-top">
-				<div class="container navbar-container"
-					style="margin-left: 0; margin-right: 0; width: 100%; box-sizing: border-box">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}" rel="stylesheet" />
 
-					<div class="navbar-header">
-						<button type="button" class="navbar-toggle collapsed"
-							data-toggle="collapse" data-target="#navbar"
-							aria-expanded="false" aria-controls="navbar">
-							<span class="sr-only">Toggle navigation</span> <span
-								class="icon-bar"></span> <span class="icon-bar"></span> <span
-								class="icon-bar"></span>
-						</button>
-					</div>
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet" />
 
-					<div class="navbar-collapse collapse" id="navbar">
-						<ul class="nav navbar-nav">
-							<li><a href="timeline_user.html" th:href="@{/timeline/123}" ><span
-									class="glyphicon glyphicon-home"></span> Persönliche Timeline</a></li>
-							<li><a href="profile.html" th:href="@{/user/123}"><span
-									class="glyphicon glyphicon-user"></span> Mein Profil</a></li>
-							<li class="active"><a href="timeline.html" th:href="@{/timeline}"><span
-									class="glyphicon glyphicon-globe"></span> Globale Timeline</a></li>
-						</ul>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
 
-						<form id="rcont" class="navbar-form navbar-right" role="search" th:action="@{/search}"  method="post">
-							<div id="imaginary_container"
-								class="input-group stylish-input-group">
-								<input type="text" class="form-control" placeholder="Search" />
-								<span class="input-group-addon">
-									<button type="submit">
-										<span class="glyphicon glyphicon-search"></span>
-									</button>
-								</span>
-							</div>
-							<a class="log" href="login.html" th:href="@{/}"><span
-								class="glyphicon glyphicon-log-out"></span> Logout</a>
-						</form>
-					</div>
-					<!-- /.navbar-collapse -->
-				</div>
-			</nav>
-		</div>
+  <body>
+
+    <div class="container-fluid">
+      <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#"><span class="glyphicon glyphicon-home"></span> Timeline</a></li>
+            <li role="presentation"><a href="#"><span class="glyphicon glyphicon-globe"></span> Global</a></li>
+            <li role="presentation"><a href="#"><span class="glyphicon glyphicon-user"></span> Me</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Hi <span th:text="${user.username}"></span>!</h3>
+      </div>
+
+      <div class="card major" id="babble-box">
+          <div id="logo">
+              <!-- logo -->
+          </div>
+          <form action="#" th:action="@{/timeline}" method="post">
+              <div class="input-group">
+                  <input type="text" class="form-control" placeholder="What's up ..." th:field="${post.content}"/>
+                  <span class="input-group-btn">
+                      <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-send"></span> babble</button>
+                  </span>
+              </div>
+              <input th:type="hidden" th:field="${post.username}" th:value="${post.username}"/>
+          </form>
+      </div>
+
+      <div class="card post">
+          <div class="row">
+              <div class="col-xs-3 text-center">
+                  <a href="#">
+                      <div class="user-img"><img src="/img/memes/1.jpg" /></div>
+                      <div class="user-name">username</div>
+                  </a>
+              </div>
+              <div class="col-xs-9">
+                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
+                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
+          </div>
+          </div>
+      </div>
+
+      <div class="card post">
+          <div class="row">
+              <div class="col-xs-3 text-center">
+                  <a href="#">
+                      <div class="user-img"><img src="/img/memes/2.jpg" /></div>
+                      <div class="user-name">username</div>
+                  </a>
+              </div>
+              <div class="col-xs-9">
+                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
+                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
+          </div>
+          </div>
+      </div>
+      <div class="card post">
+          <div class="row">
+              <div class="col-xs-3 text-center">
+                  <a href="#">
+                      <div class="user-img"><img src="/img/memes/3.jpg" /></div>
+                      <div class="user-name">username</div>
+                  </a>
+              </div>
+              <div class="col-xs-9">
+                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
+                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
+          </div>
+          </div>
+      </div>
+      <div class="card post">
+          <div class="row">
+              <div class="col-xs-3 text-center">
+                  <a href="#">
+                      <div class="user-img"><img src="/img/memes/4.jpg" /></div>
+                      <div class="user-name">username</div>
+                  </a>
+              </div>
+              <div class="col-xs-9">
+                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
+                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
+          </div>
+          </div>
+      </div>
+      <div class="card post">
+          <div class="row">
+              <div class="col-xs-3 text-center">
+                  <a href="#">
+                      <div class="user-img"><img src="/img/memes/5.jpg" /></div>
+                      <div class="user-name">username</div>
+                  </a>
+              </div>
+              <div class="col-xs-9">
+                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
+                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
+          </div>
+          </div>
+      </div>
+      <div class="card post">
+          <div class="row">
+              <div class="col-xs-3 text-center">
+                  <a href="#">
+                      <div class="user-img"><img src="/img/memes/6.jpg" /></div>
+                      <div class="user-name">username</div>
+                  </a>
+              </div>
+              <div class="col-xs-9">
+                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
+                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
+          </div>
+          </div>
+      </div>
+
+      <footer class="footer">
+        <p>(cc) 2016 ACME Corp.</p>
+      </footer>
+
+    </div> <!-- /container -->
 
 
-		<div class="jumbotron">
-			<div class="container-fluid">
-
-
-				<div class="col-xs-12 col-md-12">
-					<div id="send-tweet-container">
-						<form role="form" id="send-tweet-container-form">
-							<div class="form-group" id="send-tweet-container-input">
-								<input type="text" class="form-control"
-									placeholder="Was gibt's Neues?" maxlength="140" />
-							</div>
-							<div id="send-tweet-container-button">
-								<button type="submit" class="btn btn-default">
-									<span class="glyphicon glyphicon-send"> </span>Babbeln
-								</button>
-							</div>
-						</form>
-					</div>
-					<div id="tweet-container">
-						<div class="tweet">
-							<h3 class="tweet-user">KANYE WEST</h3>
-							<p class="tweet-text">Thank you to everybody who made The
-								Life of Pablo the number 1 album in the world!!!</p>
-							<p class="tweet-time">02.04.2016 10:00</p>
-						</div>
-						<div class="tweet">
-							<h3 class="tweet-user">Ricky Gervais</h3>
-							<p class="tweet-text">You wait for ages &amp; then 2 come
-								along at once. My movies are like buses! But without the
-								flashers &amp; the smell of piss.</p>
-							<p class="tweet-time">02.04.2016 09:57</p>
-						</div>
-						<div class="tweet">
-							<h3 class="tweet-user">Barack Obama</h3>
-							<p class="tweet-text">Clean energy currently employs 2.5
-								million people in the United States. Check it out:
-								http://ofa.bo/gA3q #ActOnClimate</p>
-							<p class="tweet-time">02.04.2016 09:55</p>
-						</div>
-						<div class="tweet">
-							<h3 class="tweet-user">John Doe</h3>
-							<p class="tweet-text">Lorem ipsum dolor sit amet, consetetur
-								sadipscing elitr, sed diam nonumy eirmod tempor.</p>
-							<p class="tweet-time">02.04.2016 09:33</p>
-						</div>
-						<div class="tweet">
-							<h3 class="tweet-user">Max Mustermann</h3>
-							<p class="tweet-text">Sinvidunt ut labore et dolore magna
-								aliquyam erat, sed diam voluptua.</p>
-							<p class="tweet-time">02.04.2016 09:02</p>
-						</div>
-						<div class="tweet">
-							<h3 class="tweet-user">Max Mustermann</h3>
-							<p class="tweet-text">Stet clita kasd gubergren, no sea
-								takimata sanctus est Lorem ipsum dolor sit amet.</p>
-							<p class="tweet-time">02.04.2016 09:01</p>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Bootstrap core JavaScript
-    ================================================== -->
-	<!-- Placed at the end of the document so the pages load faster -->
-	<script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
-	<script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
-</body>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+    <!-- Bootstrap core JavaScript -->
+    <script th:src="@{/webjars/bootstrap/3.3.4/js/bootstrap.min.js}"></script>
+  </body>
 </html>

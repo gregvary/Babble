@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import de.hska.vs2.beschte.Babble.Util;
+import de.hska.vs2.beschte.Babble.post.Post;
 import de.hska.vs2.beschte.Babble.user.User;
 import de.hska.vs2.beschte.Babble.user.UserRepository;
 
@@ -21,25 +23,37 @@ public class LoginController {
 	}
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String greetingSubmit(@ModelAttribute Login login, Model model) {
-		model.addAttribute("login", login != null ? login : new Login());
+	public String showLogin(Model model) {
+		model.addAttribute("login", new Login());
 		return "login";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(@ModelAttribute Login login, Model model) {
-		return "timeline";
+	@RequestMapping(value = "/", method = RequestMethod.POST)
+	public String signIn(@ModelAttribute Login login, Model model) {
+		User user = userRepository.findUser(login.getUsername());
+		if (user == null)
+			return "login";
+		
+		String hashedPassword = Util.hash(login.getPassword() + login.getUsername());
+		if (user.getPassword().equals(hashedPassword)) {
+			model.addAttribute("user", user);
+			model.addAttribute("post", new Post(user.getUsername()));
+			return "timeline";
+		} else 
+			return "login";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
-	public String addUser(@ModelAttribute User user) {
+	public String showRegister(Model model) {
+		model.addAttribute("user", new User());
 		return "register";
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String saveUser(@ModelAttribute User user, Model model) {
+		user.setPassword(Util.hash(user.getPassword() + user.getUsername()));
 		userRepository.saveUser(user);
-		model.addAttribute("message", "User successfully added");
+		model.addAttribute("post", new Post(user.getUsername()));
 		return "timeline";
 	}
 }

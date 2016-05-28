@@ -1,7 +1,7 @@
 package de.hska.vs2.beschte.Babble.post;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Date;
 
 public class Post implements Serializable {
 
@@ -10,9 +10,14 @@ public class Post implements Serializable {
 	private String id;
 	private String content;
 	private String userID;
-	private Timestamp timestamp;
+	private Date timestamp;
+	private String username;
 
 	public Post() {}
+
+	public Post(String username) {
+		this.username = username;
+	}
 
 	public String getId() {
 		return id;
@@ -38,12 +43,19 @@ public class Post implements Serializable {
 		this.userID = userID;
 	}
 
-	public Timestamp getTimestamp() {
+	public Date getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(Timestamp timestamp) {
+	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
+	}
+
+	public String getUsername() {
+		return username != null ? username.toLowerCase() : null;
+	}
+	public void setUsername(String username) {
+		this.username = username != null ? username.toLowerCase() : null;
 	}
 
 	

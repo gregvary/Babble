@@ -9,6 +9,6 @@ public class AppController {
 
 	@RequestMapping(value = "/search")
 	public String showSearchResults(Model model) {
-		return "search";
+		return "login";
 	}
 }

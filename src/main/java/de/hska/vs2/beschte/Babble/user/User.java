@@ -22,10 +22,10 @@ public class User implements Serializable {
 	}
 
 	public String getUsername() {
-		return username.toLowerCase();
+		return username == null ? null : username.toLowerCase();
 	}
 	public void setUsername(String username) {
-		this.username = username.toLowerCase();
+		this.username = username == null ? null : username.toLowerCase();
 	}
 	public String getPassword() {
 		return password;

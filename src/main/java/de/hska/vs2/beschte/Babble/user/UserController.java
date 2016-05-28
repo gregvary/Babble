@@ -21,7 +21,7 @@ public class UserController {
 	@RequestMapping(value = "/user/{username}")
 	public String showProfile(@PathVariable("username") String username, @ModelAttribute User user, Model model) {
 		model.addAttribute("user", user);
-		return "profile";
+		return "timeline";
 	}
 	
 //	@RequestMapping(value = "/users", method = RequestMethod.GET)

@@ -1,6 +1,6 @@
 package de.hska.vs2.beschte.Babble.user;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,6 +60,7 @@ public class UserRepository {
 	public UserRepository(StringRedisTemplate stringRedisTemplate) {
 		this.stringRedisTemplate = stringRedisTemplate;
 		this.userid = new RedisAtomicLong("userid", stringRedisTemplate.getConnectionFactory());
+		this.postid = new RedisAtomicLong("postid", stringRedisTemplate.getConnectionFactory());
 	}
 
 	@PostConstruct
@@ -165,7 +166,7 @@ public class UserRepository {
 		String key = POSTS_PREFIX + id;
 		redisStringHashOps.put(key, "id", id);
 		redisStringHashOps.put(key, "content", post.getContent());
-		redisStringHashOps.put(key, "timestemp", post.getTimestamp().toString());
+		redisStringHashOps.put(key, "timestemp", String.valueOf(post.getTimestamp().getTime()));
 
 		redisStringSetOps.add(KEY_FOR_ALL_POSTS, key);
 		
@@ -183,7 +184,7 @@ public class UserRepository {
 		if (redisStringSetOps.isMember(KEY_FOR_ALL_POSTS, key)) {
 			post.setId(redisStringHashOps.get(key, "id"));
 			post.setContent(redisStringHashOps.get(key, "content"));
-			post.setTimestamp(Timestamp.valueOf(redisStringHashOps.get(key, "lastname")));
+			post.setTimestamp(new Date(Long.valueOf(redisStringHashOps.get(key, "lastname"))));
 		} else
 			post = null;
 		return post;
