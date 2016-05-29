@@ -1,6 +1,7 @@
 package de.hska.vs2.beschte.Babble.timeline;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,13 +33,22 @@ public class TimelineController {
 	}
 	
 	@RequestMapping(value = "/timeline", method = RequestMethod.POST)
-	public String post(@ModelAttribute Post post, @ModelAttribute User user, Model model) {
+	public String post(@ModelAttribute Post post, @ModelAttribute User user, @ModelAttribute Timeline timeline, Model model) {
 		post.setTimestamp(new Date());
-		System.out.println(user.getUsername() + "...." + post.getUsername());
-		userRepository.savePost(post, post.getUsername());
+		userRepository.savePost(post, user.getUsername());
 		
-		model.addAttribute("post", new Post(post.getUsername()));
+		model.addAttribute("post", new Post());
+		model.addAttribute("timeline", initTimeline());
 		return "timeline";
 	}
 	
+	private Timeline initTimeline() {
+		Timeline timeline = new Timeline();
+		List<Post> posts = userRepository.findGlobalPostsInRange(0, 10);
+		for (Post post : posts) {
+			User userForPost = userRepository.findAndCreateUserForPost(post.getId());
+			timeline.getEntries().put(post, userForPost);
+		}
+		return timeline;
+	}
 }

@@ -11,13 +11,8 @@ public class Post implements Serializable {
 	private String content;
 	private String userID;
 	private Date timestamp;
-	private String username;
 
 	public Post() {}
-
-	public Post(String username) {
-		this.username = username;
-	}
 
 	public String getId() {
 		return id;
@@ -51,13 +46,4 @@ public class Post implements Serializable {
 		this.timestamp = timestamp;
 	}
 
-	public String getUsername() {
-		return username != null ? username.toLowerCase() : null;
-	}
-	public void setUsername(String username) {
-		this.username = username != null ? username.toLowerCase() : null;
-	}
-
-	
-	
 }

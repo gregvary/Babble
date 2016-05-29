@@ -49,93 +49,22 @@
                       <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-send"></span> babble</button>
                   </span>
               </div>
-              <input th:type="hidden" th:field="${post.username}" th:value="${post.username}"/>
+              <input th:type="hidden" th:field="${user.username}" th:value="${user.username}"/>
           </form>
       </div>
 
-      <div class="card post">
+      <div class="card post" th:each="entry : ${timeline.entries}">
           <div class="row">
               <div class="col-xs-3 text-center">
                   <a href="#">
-                      <div class="user-img"><img src="/img/memes/1.jpg" /></div>
-                      <div class="user-name">username</div>
+                      <div class="user-img"><img src="/img/memes/0.jpg" th:src="'/img/memes/' + ${entry.value.getImageNumber()} + '.jpg'" /></div>
+                      <div class="user-name"><span th:text="${entry.value.username}"></span></div>
                   </a>
               </div>
               <div class="col-xs-9">
-                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
-                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
-          </div>
-          </div>
-      </div>
-
-      <div class="card post">
-          <div class="row">
-              <div class="col-xs-3 text-center">
-                  <a href="#">
-                      <div class="user-img"><img src="/img/memes/2.jpg" /></div>
-                      <div class="user-name">username</div>
-                  </a>
+                  <p class="lead" th:text="${entry.key.content}"></p>
+                  <time datetime="2007-08-29T13:58Z" class="initialism" th:attr="datetime=${entry.key.timestamp}" th:text="${entry.key.timestamp}"></time>
               </div>
-              <div class="col-xs-9">
-                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
-                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
-          </div>
-          </div>
-      </div>
-      <div class="card post">
-          <div class="row">
-              <div class="col-xs-3 text-center">
-                  <a href="#">
-                      <div class="user-img"><img src="/img/memes/3.jpg" /></div>
-                      <div class="user-name">username</div>
-                  </a>
-              </div>
-              <div class="col-xs-9">
-                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
-                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
-          </div>
-          </div>
-      </div>
-      <div class="card post">
-          <div class="row">
-              <div class="col-xs-3 text-center">
-                  <a href="#">
-                      <div class="user-img"><img src="/img/memes/4.jpg" /></div>
-                      <div class="user-name">username</div>
-                  </a>
-              </div>
-              <div class="col-xs-9">
-                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
-                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
-          </div>
-          </div>
-      </div>
-      <div class="card post">
-          <div class="row">
-              <div class="col-xs-3 text-center">
-                  <a href="#">
-                      <div class="user-img"><img src="/img/memes/5.jpg" /></div>
-                      <div class="user-name">username</div>
-                  </a>
-              </div>
-              <div class="col-xs-9">
-                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
-                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
-          </div>
-          </div>
-      </div>
-      <div class="card post">
-          <div class="row">
-              <div class="col-xs-3 text-center">
-                  <a href="#">
-                      <div class="user-img"><img src="/img/memes/6.jpg" /></div>
-                      <div class="user-name">username</div>
-                  </a>
-              </div>
-              <div class="col-xs-9">
-                  <p class="lead">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed</p>
-                  <time datetime="2007-08-29T13:58Z" class="initialism">August 29th, 2007 at 13:58</time>
-          </div>
           </div>
       </div>
 

@@ -45,4 +45,9 @@ public class User implements Serializable {
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}
+	
+	public String getImageNumber() {
+		int number = Math.abs(this.username.hashCode() % 176);
+		return String.valueOf(number);
+	}
 }
