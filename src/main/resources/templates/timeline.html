@@ -33,6 +33,7 @@
             <li role="presentation" class="active"><a href="#"><span class="glyphicon glyphicon-home"></span> Timeline</a></li>
             <li role="presentation"><a href="#"><span class="glyphicon glyphicon-globe"></span> Global</a></li>
             <li role="presentation"><a href="#"><span class="glyphicon glyphicon-user"></span> Me</a></li>
+            <li role="presentation"><a href="/logout"><span class="glyphicon glyphicon-off"></span> Log out</a></li>
           </ul>
         </nav>
         <h3 class="text-muted">Hi <span th:text="${user.username}"></span>!</h3>
@@ -49,7 +50,6 @@
                       <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-send"></span> babble</button>
                   </span>
               </div>
-              <input th:type="hidden" th:field="${user.username}" th:value="${user.username}"/>
           </form>
       </div>
 

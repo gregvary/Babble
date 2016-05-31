@@ -1,12 +1,13 @@
-package de.hska.vs2.beschte.Babble;
+package de.hska.vs2.beschte.Babble.login.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
-public abstract class Util {
+public abstract class SecurityUtil {
 
-	public static String hash(String password) {
+	public static String getUserPasswordHashed(String password, String username) {
+		password = password + username;
 	    MessageDigest sha256;
 		try {
 			sha256 = MessageDigest.getInstance("SHA-256");

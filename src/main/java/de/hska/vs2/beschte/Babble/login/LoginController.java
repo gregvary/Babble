@@ -1,6 +1,11 @@
 package de.hska.vs2.beschte.Babble.login;
 
-import java.util.List;
+import java.time.Duration;
+import java.util.concurrent.TimeUnit;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,66 +14,68 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import de.hska.vs2.beschte.Babble.Util;
-import de.hska.vs2.beschte.Babble.post.Post;
-import de.hska.vs2.beschte.Babble.timeline.Timeline;
+import de.hska.vs2.beschte.Babble.login.security.SecurityUtil;
+import de.hska.vs2.beschte.Babble.login.security.SimpleSecurity;
 import de.hska.vs2.beschte.Babble.user.User;
 import de.hska.vs2.beschte.Babble.user.UserRepository;
 
 @Controller
 public class LoginController {
-	
-	private final UserRepository userRepository;
+	private static final Duration TIMEOUT = Duration.ofMinutes(15);
 
 	@Autowired
-	public LoginController(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
-	
+	private UserRepository userRepository;
+	@Autowired
+	private LoginRepository loginRepository;
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showLogin(Model model) {
+		if(!SimpleSecurity.isSignedIn()) {
+			model.addAttribute("login", new Login());
+			return "login";
+		}
+		
+		return "redirect:/timeline";
+	}
+	
+	@RequestMapping(value = "/", method = RequestMethod.POST)
+	public String login(@ModelAttribute("login") @Valid Login login, HttpServletResponse response, Model model) {
+		String hashedPassword = SecurityUtil.getUserPasswordHashed(login.getPassword(), login.getUsername());
+		if (loginRepository.auth(login.getUsername(), hashedPassword)) {
+			String auth = loginRepository.addAuth(login.getUsername(), TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+			Cookie cookie = new Cookie("auth", auth);
+			response.addCookie(cookie);
+			return "redirect:/timeline";
+		}
+		
 		model.addAttribute("login", new Login());
 		return "login";
 	}
 	
-	@RequestMapping(value = "/", method = RequestMethod.POST)
-	public String signIn(@ModelAttribute Login login, Model model) {
-		User user = userRepository.findAndCreateUser(login.getUsername());
-		if (user == null)
-			return "login";
-		
-		String hashedPassword = Util.hash(login.getPassword() + login.getUsername());
-		if (user.getPassword().equals(hashedPassword)) {
-			model.addAttribute("user", user);
-			model.addAttribute("post", new Post());
-			model.addAttribute("timeline", initTimeline());
-			return "timeline";
-		} else 
-			return "login";
-	}
-
-	private Timeline initTimeline() {
-		Timeline timeline = new Timeline();
-		List<Post> posts = userRepository.findGlobalPostsInRange(10);
-		for (int i = posts.size() - 1; i >= 0; i--) {
-			User userForPost = userRepository.findAndCreateUserForPost(posts.get(i).getId());
-			timeline.getEntries().put(posts.get(i), userForPost);
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout() {
+		if (SimpleSecurity.isSignedIn()) {
+			String name = SimpleSecurity.getUsername();
+			loginRepository.deleteAuth(name);
+			SimpleSecurity.logout();
 		}
-		return timeline;
+		return "redirect:/";
 	}
-
+	
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String showRegister(Model model) {
 		model.addAttribute("user", new User());
 		return "register";
 	}
-	
+
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String saveUser(@ModelAttribute User user, Model model) {
-		user.setPassword(Util.hash(user.getPassword() + user.getUsername()));
+	public String registerUser(@ModelAttribute User user, HttpServletResponse response, Model model) {
+		user.setPassword(SecurityUtil.getUserPasswordHashed(user.getPassword(), user.getUsername()));
 		userRepository.saveUser(user);
-		model.addAttribute("post", new Post());
-		model.addAttribute("timeline", initTimeline());
-		return "timeline";
+		String auth = loginRepository.addAuth(user.getUsername(), TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+		Cookie cookie = new Cookie("auth", auth);
+		response.addCookie(cookie);
+		return "redirect:/timeline";
 	}
+
 }

@@ -1,7 +1,6 @@
 package de.hska.vs2.beschte.Babble.timeline;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,45 +9,54 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import de.hska.vs2.beschte.Babble.login.security.SimpleSecurity;
 import de.hska.vs2.beschte.Babble.post.Post;
-import de.hska.vs2.beschte.Babble.user.User;
 import de.hska.vs2.beschte.Babble.user.UserRepository;
 
 @Controller
 public class TimelineController {
-	
-	private final UserRepository userRepository;
-
 	@Autowired
-	public TimelineController(UserRepository userRepository) {
-		this.userRepository = userRepository;
-	}
+	private UserRepository userRepository;
+	@Autowired
+	private TimelineFactory timelineFactory;
 
 	@RequestMapping(value = "/timeline/{user-id}", method = RequestMethod.GET)
 	public String showUserTimeline(@PathVariable("user-id") String userID, @ModelAttribute Timeline timeline,
 			Model model) {
+		if(!SimpleSecurity.isSignedIn())
+			return "redirect:/";
+		
 		model.addAttribute("timeline", timeline);
 		return "timeline";
 	}
 	
 	@RequestMapping(value = "/timeline", method = RequestMethod.POST)
-	public String post(@ModelAttribute Post post, @ModelAttribute User user, @ModelAttribute Timeline timeline, Model model) {
-		post.setTimestamp(new Date());
-		userRepository.savePost(post, user.getUsername());
+	public String post(@ModelAttribute Post post, Model model) {
+		if(!SimpleSecurity.isSignedIn())
+			return "redirect:/";
 		
+		post.setTimestamp(new Date());
+		userRepository.savePost(post, SimpleSecurity.getUsername());
+		
+		model.addAttribute("user", userRepository.findAndCreateUser(SimpleSecurity.getUsername()));
 		model.addAttribute("post", new Post());
-		model.addAttribute("timeline", initTimeline());
+		model.addAttribute("timeline", timelineFactory.createGlobalTimelineForRange(0, TimelineFactory.POSTS_PER_PAGE_COUNT));
 		return "timeline";
 	}
 	
-	private Timeline initTimeline() {
-		Timeline timeline = new Timeline();
-		List<Post> posts = userRepository.findGlobalPostsInRange(10);
-		for (int i = posts.size() - 1; i >= 0; i--) {
-			User userForPost = userRepository.findAndCreateUserForPost(posts.get(i).getId());
-			timeline.getEntries().put(posts.get(i), userForPost);
-		}
-		return timeline;
+	@RequestMapping(value = "/timeline", method = RequestMethod.GET)
+	public String showTimelinePage(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+		if(!SimpleSecurity.isSignedIn())
+			return "redirect:/";
+						
+		long end = page * TimelineFactory.POSTS_PER_PAGE_COUNT;
+		long start = end - TimelineFactory.POSTS_PER_PAGE_COUNT;
+		
+		model.addAttribute("user", userRepository.findAndCreateUser(SimpleSecurity.getUsername()));
+		model.addAttribute("post", new Post());
+		model.addAttribute("timeline", timelineFactory.createGlobalTimelineForRange(start, end));
+		return "timeline";
 	}
 }

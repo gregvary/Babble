@@ -153,15 +153,14 @@ public class UserRepository {
 		return posts;
 	}
 
-	public List<Post> findGlobalPostsInRange(long diff) {
+	public List<Post> findGlobalPostsInRange(long start, long end) {
 		List<Post> posts = new LinkedList<>();
-		Set<String> postIDs;
-		Long setlength = redisStringSortedSetOps.zCard(KEY_FOR_ALL_POSTS);
-		if(setlength > diff) {
-			postIDs = redisStringSortedSetOps.range(KEY_FOR_ALL_POSTS, setlength - diff, setlength);
-		} else {
-			postIDs = redisStringSortedSetOps.range(KEY_FOR_ALL_POSTS, 0, setlength);
-		}
+		
+//		Long postCount = redisStringSortedSetOps.zCard(KEY_FOR_ALL_POSTS);
+		if(end < start) 
+			return posts;
+			
+		Set<String> postIDs = redisStringSortedSetOps.range(KEY_FOR_ALL_POSTS, start, end);
 		
 		for (String id : postIDs) {
 			posts.add(findAndCreatePost(id));
@@ -171,7 +170,8 @@ public class UserRepository {
 
 	public void savePost(Post post, String username) {
 		// generate a unique id
-		String id = String.valueOf(postid.incrementAndGet());
+		long score = postid.incrementAndGet();
+		String id = String.valueOf(score);
 		post.setId(id);
 
 		// to show how objects can be saved
@@ -181,7 +181,7 @@ public class UserRepository {
 		redisStringHashOps.put(key, "content", post.getContent());
 		redisStringHashOps.put(key, "timestamp", String.valueOf(post.getTimestamp().getTime()));
 
-		redisStringSortedSetOps.add(KEY_FOR_ALL_POSTS, id, post.getTimestamp().getTime());
+		redisStringSortedSetOps.add(KEY_FOR_ALL_POSTS, id, score);
 
 		String userPostsKey = USER_PREFIX + username + POSTS_SUFFIX;
 		redisStringListOps.rightPush(userPostsKey, id);
@@ -202,6 +202,10 @@ public class UserRepository {
 			return null;
 		
 		return post;
+	}
+	
+	public long getGlobalPostCount() {
+		return redisStringSortedSetOps.zCard(KEY_FOR_ALL_POSTS);
 	}
 	
 	public User findAndCreateUserForPost(String postId){
