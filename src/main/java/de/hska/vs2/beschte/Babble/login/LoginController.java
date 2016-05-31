@@ -49,10 +49,10 @@ public class LoginController {
 
 	private Timeline initTimeline() {
 		Timeline timeline = new Timeline();
-		List<Post> posts = userRepository.findGlobalPostsInRange(0, 10);
-		for (Post post : posts) {
-			User userForPost = userRepository.findAndCreateUserForPost(post.getId());
-			timeline.getEntries().put(post, userForPost);
+		List<Post> posts = userRepository.findGlobalPostsInRange(10);
+		for (int i = posts.size() - 1; i >= 0; i--) {
+			User userForPost = userRepository.findAndCreateUserForPost(posts.get(i).getId());
+			timeline.getEntries().put(posts.get(i), userForPost);
 		}
 		return timeline;
 	}

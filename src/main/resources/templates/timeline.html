@@ -44,7 +44,7 @@
           </div>
           <form action="#" th:action="@{/timeline}" method="post">
               <div class="input-group">
-                  <input type="text" class="form-control" placeholder="What's up ..." th:field="${post.content}"/>
+                  <input th:required="required" type="text" class="form-control" placeholder="What's up ..." th:field="${post.content}"/>
                   <span class="input-group-btn">
                       <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-send"></span> babble</button>
                   </span>

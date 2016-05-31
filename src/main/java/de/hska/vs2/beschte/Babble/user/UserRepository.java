@@ -153,9 +153,16 @@ public class UserRepository {
 		return posts;
 	}
 
-	public List<Post> findGlobalPostsInRange(long start, long end) {
+	public List<Post> findGlobalPostsInRange(long diff) {
 		List<Post> posts = new LinkedList<>();
-		Set<String> postIDs = redisStringSortedSetOps.range(KEY_FOR_ALL_POSTS, start, end);
+		Set<String> postIDs;
+		Long setlength = redisStringSortedSetOps.zCard(KEY_FOR_ALL_POSTS);
+		if(setlength > diff) {
+			postIDs = redisStringSortedSetOps.range(KEY_FOR_ALL_POSTS, setlength - diff, setlength);
+		} else {
+			postIDs = redisStringSortedSetOps.range(KEY_FOR_ALL_POSTS, 0, setlength);
+		}
+		
 		for (String id : postIDs) {
 			posts.add(findAndCreatePost(id));
 		}
