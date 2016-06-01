@@ -2,9 +2,14 @@ package de.hska.vs2.beschte.Babble.login.security;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
 import java.util.Base64;
+import java.util.concurrent.TimeUnit;
 
 public abstract class SecurityUtil {
+	
+	public static final Duration TIMEOUT = Duration.ofMinutes(20);
+	public static final TimeUnit TIME_UNIT = TimeUnit.SECONDS;
 
 	public static String getUserPasswordHashed(String password, String username) {
 		password = password + username;

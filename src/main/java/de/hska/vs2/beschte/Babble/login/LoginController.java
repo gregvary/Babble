@@ -1,8 +1,5 @@
 package de.hska.vs2.beschte.Babble.login;
 
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -21,7 +18,6 @@ import de.hska.vs2.beschte.Babble.user.UserRepository;
 
 @Controller
 public class LoginController {
-	private static final Duration TIMEOUT = Duration.ofMinutes(15);
 
 	@Autowired
 	private UserRepository userRepository;
@@ -42,7 +38,7 @@ public class LoginController {
 	public String login(@ModelAttribute("login") @Valid Login login, HttpServletResponse response, Model model) {
 		String hashedPassword = SecurityUtil.getUserPasswordHashed(login.getPassword(), login.getUsername());
 		if (loginRepository.auth(login.getUsername(), hashedPassword)) {
-			String auth = loginRepository.addAuth(login.getUsername(), TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+			String auth = loginRepository.addAuth(login.getUsername(), SecurityUtil.TIMEOUT.getSeconds(), SecurityUtil.TIME_UNIT);
 			Cookie cookie = new Cookie("auth", auth);
 			response.addCookie(cookie);
 			return "redirect:/timeline";
@@ -72,7 +68,7 @@ public class LoginController {
 	public String registerUser(@ModelAttribute User user, HttpServletResponse response, Model model) {
 		user.setPassword(SecurityUtil.getUserPasswordHashed(user.getPassword(), user.getUsername()));
 		userRepository.saveUser(user);
-		String auth = loginRepository.addAuth(user.getUsername(), TIMEOUT.getSeconds(), TimeUnit.SECONDS);
+		String auth = loginRepository.addAuth(user.getUsername(), SecurityUtil.TIMEOUT.getSeconds(), SecurityUtil.TIME_UNIT);
 		Cookie cookie = new Cookie("auth", auth);
 		response.addCookie(cookie);
 		return "redirect:/timeline";

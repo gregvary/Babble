@@ -22,14 +22,14 @@ public class TimelineController {
 	@Autowired
 	private TimelineFactory timelineFactory;
 
-	@RequestMapping(value = "/timeline/{user-id}", method = RequestMethod.GET)
-	public String showUserTimeline(@PathVariable("user-id") String userID, @ModelAttribute Timeline timeline,
-			Model model) {
+	@RequestMapping(value = "/timeline/{username}", method = RequestMethod.GET)
+	public String showUserTimeline(@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable("username") String username, Model model) {
 		if(!SimpleSecurity.isSignedIn())
 			return "redirect:/";
-		
-		model.addAttribute("timeline", timeline);
-		return "timeline";
+		model.addAttribute("username", SimpleSecurity.getUsername());
+		model.addAttribute("user", userRepository.findAndCreateUser(username));
+		model.addAttribute("timeline", timelineFactory.createUserTimeline(username, page));
+		return "timeline_user";
 	}
 	
 	@RequestMapping(value = "/timeline", method = RequestMethod.POST)
@@ -40,23 +40,40 @@ public class TimelineController {
 		post.setTimestamp(new Date());
 		userRepository.savePost(post, SimpleSecurity.getUsername());
 		
-		model.addAttribute("user", userRepository.findAndCreateUser(SimpleSecurity.getUsername()));
+		model.addAttribute("username", SimpleSecurity.getUsername());
 		model.addAttribute("post", new Post());
-		model.addAttribute("timeline", timelineFactory.createGlobalTimelineForRange(0, TimelineFactory.POSTS_PER_PAGE_COUNT));
-		return "timeline";
+		model.addAttribute("timeline", timelineFactory.createGlobalTimelineForRange(1));
+		return "timeline_global";
+	}
+	
+	@RequestMapping(value = "/follow", method = RequestMethod.GET)
+	public String follow(@RequestParam(name = "user") String user, Model model) {
+		if(!SimpleSecurity.isSignedIn())
+			return "redirect:/";
+		
+		userRepository.follow(SimpleSecurity.getUsername(), user);
+		return "redirect:/timeline";
 	}
 	
 	@RequestMapping(value = "/timeline", method = RequestMethod.GET)
-	public String showTimelinePage(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+	public String showGlobalTimeline(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
 		if(!SimpleSecurity.isSignedIn())
 			return "redirect:/";
-						
-		long end = page * TimelineFactory.POSTS_PER_PAGE_COUNT;
-		long start = end - TimelineFactory.POSTS_PER_PAGE_COUNT;
 		
-		model.addAttribute("user", userRepository.findAndCreateUser(SimpleSecurity.getUsername()));
+		model.addAttribute("username", SimpleSecurity.getUsername());
 		model.addAttribute("post", new Post());
-		model.addAttribute("timeline", timelineFactory.createGlobalTimelineForRange(start, end));
-		return "timeline";
+		model.addAttribute("timeline", timelineFactory.createGlobalTimelineForRange(page));
+		return "timeline_global";
+	}
+	
+	@RequestMapping(value = "/feed", method = RequestMethod.GET)
+	public String showFeedTimeline(@RequestParam(name = "page", defaultValue = "1") int page, Model model) {
+		if(!SimpleSecurity.isSignedIn())
+			return "redirect:/";
+		
+		model.addAttribute("username", SimpleSecurity.getUsername());
+		model.addAttribute("post", new Post());
+		model.addAttribute("timeline", timelineFactory.createFeedTimeline(SimpleSecurity.getUsername(), page));
+		return "timeline_feed";
 	}
 }

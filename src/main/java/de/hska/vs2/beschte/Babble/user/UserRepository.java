@@ -156,7 +156,11 @@ public class UserRepository {
 	public List<Post> findGlobalPostsInRange(long start, long end) {
 		List<Post> posts = new LinkedList<>();
 		
-//		Long postCount = redisStringSortedSetOps.zCard(KEY_FOR_ALL_POSTS);
+		Long postCount = redisStringSortedSetOps.zCard(KEY_FOR_ALL_POSTS);
+		if(end > postCount)
+			end = postCount;
+		if(start < 0)
+			start = 0;
 		if(end < start) 
 			return posts;
 			
@@ -167,10 +171,30 @@ public class UserRepository {
 		}
 		return posts;
 	}
+	
+	public List<Post> findUserPostsInRange(String username, long start, long end) {
+		List<Post> posts = new LinkedList<>();
+		String userPostsKey = USER_PREFIX + username + POSTS_SUFFIX;
+		
+		Long postCount = redisStringListOps.size(userPostsKey);
+		if(end > postCount)
+			end = postCount;
+		if(start < 0)
+			start = 0;
+		if(end < start) 
+			return posts;
+		
+		List<String> postIDs = redisStringListOps.range(userPostsKey, start, end);
+		
+		for (String id : postIDs) {
+			posts.add(findAndCreatePost(id));
+		}
+		return posts;
+	}
 
 	public void savePost(Post post, String username) {
 		// generate a unique id
-		long score = postid.incrementAndGet();
+		long score = Long.MAX_VALUE - postid.incrementAndGet();
 		String id = String.valueOf(score);
 		post.setId(id);
 
@@ -184,7 +208,7 @@ public class UserRepository {
 		redisStringSortedSetOps.add(KEY_FOR_ALL_POSTS, id, score);
 
 		String userPostsKey = USER_PREFIX + username + POSTS_SUFFIX;
-		redisStringListOps.rightPush(userPostsKey, id);
+		redisStringListOps.leftPush(userPostsKey, id);
 
 		String postToUserKey = POSTS_PREFIX + id + USER_SUFFIX;
 		redisStringValueOps.append(postToUserKey, username);

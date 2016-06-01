@@ -22,7 +22,7 @@ public class LoginRepository {
 
 	public boolean auth(String username, String hashedPassword) {
 		BoundHashOperations<String, String, String> userOps = template.boundHashOps(USER_PREFIX + username);
-		return userOps.get("password").equals(hashedPassword);
+		return hashedPassword.equals(userOps.get("password"));
 	}
 
 	public String addAuth(String username, long timeout, TimeUnit tUnit) {
@@ -43,5 +43,10 @@ public class LoginRepository {
 	
 	public String getUsername(String auth) {
 		return template.opsForValue().get(AUTH_PREFIX + auth + USER_SUFFIX);
+	}
+	
+	public void refreshAuth(String username, long timeout, TimeUnit tUnit) {
+		String userAuthKey = USER_PREFIX + username + AUTH_SUFFIX;
+		template.expire(userAuthKey, timeout, tUnit);
 	}
 }

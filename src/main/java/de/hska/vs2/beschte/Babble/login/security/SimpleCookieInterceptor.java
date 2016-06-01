@@ -28,6 +28,7 @@ public class SimpleCookieInterceptor extends HandlerInterceptorAdapter {
 						String username = repository.getUsername(auth);
 						if (username != null) {
 							SimpleSecurity.setUser(username, auth);
+							repository.refreshAuth(username, SecurityUtil.TIMEOUT.getSeconds(), SecurityUtil.TIME_UNIT);
 						} else
 							SimpleSecurity.logout();
 					}

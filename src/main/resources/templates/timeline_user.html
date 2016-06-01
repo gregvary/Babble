@@ -30,9 +30,9 @@
       <div class="header clearfix">
         <nav>
           <ul class="nav nav-pills pull-right">
-            <li role="presentation"><a href="/timeline"><span class="glyphicon glyphicon-home"></span> Timeline</a></li>
-            <li role="presentation"><a href="#"><span class="glyphicon glyphicon-globe"></span> Global</a></li>
-            <li role="presentation" class="active"><a href="/profile"><span class="glyphicon glyphicon-user"></span> Me</a></li>
+            <li role="presentation"><a href="/feed"><span class="glyphicon glyphicon-home"></span> Timeline</a></li>
+            <li role="presentation"><a href="/timeline"><span class="glyphicon glyphicon-globe"></span> Global</a></li>
+            <li role="presentation" class="active"><a href="/timeline" th:href="'/timeline/' + ${username}"><span class="glyphicon glyphicon-user"></span> Me</a></li>
             <li role="presentation"><a href="/logout"><span class="glyphicon glyphicon-off"></span> Log out</a></li>
           </ul>
         </nav>
@@ -43,26 +43,31 @@
           <div id="profile-infos">
           	<div class="profile-img-area text-center">
                   <a href="#">
-                      <div class="user-img"><img src="/img/memes/0.jpg" th:src="'/img/memes/' + ${user.getImageNumber()} + '.jpg'" /></div>                      
+                      <div class="user-img"><img src="/img/memes/0.jpg" th:src="'/img/memes/' + ${user.getImageNumber()} + '.jpg'" /></div>
                   </a>
              </div>
              <div class="profile-info-area">
              	<span th:text="${user.firstname}"></span> <span th:text="${user.lastname}"></span><br/>
              	<span class="alias">alias</span><br/>
              	<span class="profile-user-name" th:text="${user.username}"></span>
-             </div>          	
+
+                <div th:class="${user.username.equals(username)}? 'hidden' : 'show text-center'" >
+                    <a class="btn btn-primary" href="/follow" th:href="'/follow?user=' + ${user.username}">Follow</a>
+                </div>
+
+             </div>
           </div>
-          <form action="#" th:action="@{/profile}" method="post">
+          <!-- <form action="#" th:action="@{/timeline}" method="post">
               <div class="input-group">
                   <input th:required="required" type="text" class="form-control" placeholder="What's up ..." th:field="${post.content}"/>
                   <span class="input-group-btn">
                       <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-send"></span> babble</button>
                   </span>
               </div>
-          </form>
+          </form> -->
       </div>
 
-      <div class="card post" th:each="entry : ${profile.entries}">
+      <div class="card post" th:each="entry : ${timeline.entries}">
           <div class="row">
               <div class="col-xs-3 text-center">
                   <a href="#">
@@ -74,6 +79,15 @@
                   <p class="lead" th:text="${entry.key.content}"></p>
                   <time datetime="2007-08-29T13:58Z" class="initialism" th:attr="datetime=${entry.key.timestamp}" th:text="${entry.key.timestamp}"></time>
               </div>
+          </div>
+      </div>
+
+      <div class="text-center clearfix">
+          <div th:class="${timeline.page == 1}? 'hidden' : 'show'" >
+              <a class="btn btn-default pull-left" href="/timeline" th:href="'/timeline/' + ${user.username} + '?page=' + ${timeline.page - 1}">Load newer posts</a>
+          </div>
+          <div th:class="${timeline.entries.size() == 0}? 'hidden' : 'show'" >
+              <a class="btn btn-default pull-right" href="/timeline" th:href="'/timeline/' + ${user.username} + '?page=' + ${timeline.page + 1}">Load older posts</a>
           </div>
       </div>
 
