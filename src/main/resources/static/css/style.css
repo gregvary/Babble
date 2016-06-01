@@ -1,0 +1,119 @@
+/* Space out content a bit */
+body {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  background-color: #eee;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.footer {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+/* Custom page header */
+.header {
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 30px;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  line-height: 40px;
+}
+
+/* Custom page footer */
+.footer {
+  margin-top: 30px;
+  padding-top: 19px;
+  color: #777;
+  border-top: 1px solid #e5e5e5;
+}
+
+.card {
+  background-color: #fff;
+  width: 100%;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+.major {
+  margin-bottom: 40px;
+}
+.post {
+    padding: 25px;
+}
+
+#logo {
+    background-image: url(../img/babble_logo.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: auto 70%;
+    height: 200px;
+}
+#logo.nav-logo {
+    background-position: left center;
+    background-size: auto 100%;
+    height: 40px;
+}
+#profile-infos {
+	display: table;
+	width: 100%;
+	margin-bottom: 30px;
+}
+.profile-img-area {
+	display: table-cell;
+	width: 25%;
+}
+.profile-info-area {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 250%;
+	color: #337ab7;
+	font-weight: bold;
+	line-height: 90%;
+}
+.profile-info-area .alias {
+	font-size: 50%;
+	color: #ccc;
+	font-weight: normal;
+}
+.profile-info-area .profile-user-name {
+	font-size: 80%;
+}
+.user-img {
+    max-height: 140px;
+    margin-bottom: 5px;
+}
+.user-img img {
+    max-width: 100%;
+    max-height: 120px;
+    border-radius: 5px;
+}
+.user-name {
+    font-size: 1.3em;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+  .container-fluid {
+    max-width: 730px;
+  }
+}
+.container-narrow > hr {
+  margin: 30px 0;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+  /* Remove the padding we set earlier */
+  .header,
+  .footer {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}

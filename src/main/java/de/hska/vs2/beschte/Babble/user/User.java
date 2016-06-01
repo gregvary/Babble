@@ -11,9 +11,7 @@ public class User implements Serializable {
 	private String firstname;
 	private String lastname;
 	
-	public User() {
-
-	}
+	public User() {}
 	
 	public String getId() {
 		return id;
@@ -24,10 +22,10 @@ public class User implements Serializable {
 	}
 
 	public String getUsername() {
-		return username;
+		return username == null ? null : username.toLowerCase();
 	}
 	public void setUsername(String username) {
-		this.username = username;
+		this.username = username == null ? null : username.toLowerCase();
 	}
 	public String getPassword() {
 		return password;
@@ -48,6 +46,8 @@ public class User implements Serializable {
 		this.lastname = lastname;
 	}
 	
-	
-	
+	public String getImageNumber() {
+		int number = Math.abs(this.username.hashCode() % 176);
+		return String.valueOf(number);
+	}
 }

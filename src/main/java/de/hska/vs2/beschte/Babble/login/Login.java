@@ -7,10 +7,10 @@ public class Login {
     private boolean remember;
 	
     public String getUsername() {
-		return username;
+		return username == null ? null : username.toLowerCase();
 	}
 	public void setUsername(String username) {
-		this.username = username;
+		this.username = username == null ? null : username.toLowerCase();
 	}
 	public String getPassword() {
 		return password;
