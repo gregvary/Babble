@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import de.hska.vs2.beschte.Babble.login.security.SimpleSecurity;
 import de.hska.vs2.beschte.Babble.post.Post;
+import de.hska.vs2.beschte.Babble.user.User;
 import de.hska.vs2.beschte.Babble.user.UserRepository;
 
 @Controller
@@ -22,28 +23,36 @@ public class TimelineController {
 	@Autowired
 	private TimelineFactory timelineFactory;
 
-	@RequestMapping(value = "/timeline/{username}", method = RequestMethod.GET)
+	@RequestMapping(value = "/user/{username}", method = RequestMethod.GET)
 	public String showUserTimeline(@RequestParam(name = "page", defaultValue = "1") int page, @PathVariable("username") String username, Model model) {
 		if(!SimpleSecurity.isSignedIn())
 			return "redirect:/";
-		model.addAttribute("username", SimpleSecurity.getUsername());
-		model.addAttribute("user", userRepository.findAndCreateUser(username));
-		model.addAttribute("timeline", timelineFactory.createUserTimeline(username, page));
-		return "timeline_user";
+		
+		initTimelineModel(
+				model, 
+				2, 
+				SimpleSecurity.getUsername(), 
+				userRepository.findAndCreateUser(username), 
+				timelineFactory.createUserTimeline(username, page));
+		return "timeline";
 	}
 	
-	@RequestMapping(value = "/timeline", method = RequestMethod.POST)
+	private void initTimelineModel(Model model, int navstate, String username, User user, Timeline timeline) {
+		model.addAttribute("navstate", navstate);
+		model.addAttribute("post", new Post());
+		model.addAttribute("username", username);
+		model.addAttribute("user", user);
+		model.addAttribute("timeline", timeline);
+	}
+	
+	@RequestMapping(value = "/post", method = RequestMethod.POST)
 	public String post(@ModelAttribute Post post, Model model) {
 		if(!SimpleSecurity.isSignedIn())
 			return "redirect:/";
 		
 		post.setTimestamp(new Date());
 		userRepository.savePost(post, SimpleSecurity.getUsername());
-		
-		model.addAttribute("username", SimpleSecurity.getUsername());
-		model.addAttribute("post", new Post());
-		model.addAttribute("timeline", timelineFactory.createGlobalTimelineForRange(1));
-		return "timeline_global";
+		return "redirect:/feed";
 	}
 	
 	@RequestMapping(value = "/follow", method = RequestMethod.GET)
@@ -52,7 +61,7 @@ public class TimelineController {
 			return "redirect:/";
 		
 		userRepository.follow(SimpleSecurity.getUsername(), user);
-		return "redirect:/timeline";
+		return "redirect:/feed";
 	}
 	
 	@RequestMapping(value = "/timeline", method = RequestMethod.GET)
@@ -60,10 +69,13 @@ public class TimelineController {
 		if(!SimpleSecurity.isSignedIn())
 			return "redirect:/";
 		
-		model.addAttribute("username", SimpleSecurity.getUsername());
-		model.addAttribute("post", new Post());
-		model.addAttribute("timeline", timelineFactory.createGlobalTimelineForRange(page));
-		return "timeline_global";
+		initTimelineModel(
+				model, 
+				1, 
+				SimpleSecurity.getUsername(), 
+				null, 
+				timelineFactory.createGlobalTimelineForRange(page));
+		return "timeline";
 	}
 	
 	@RequestMapping(value = "/feed", method = RequestMethod.GET)
@@ -71,9 +83,12 @@ public class TimelineController {
 		if(!SimpleSecurity.isSignedIn())
 			return "redirect:/";
 		
-		model.addAttribute("username", SimpleSecurity.getUsername());
-		model.addAttribute("post", new Post());
-		model.addAttribute("timeline", timelineFactory.createFeedTimeline(SimpleSecurity.getUsername(), page));
-		return "timeline_feed";
+		initTimelineModel(
+				model, 
+				0, 
+				SimpleSecurity.getUsername(), 
+				null, 
+				timelineFactory.createFeedTimeline(SimpleSecurity.getUsername(), page));
+		return "timeline";
 	}
 }

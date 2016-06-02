@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+
+      <div class="header clearfix" th:fragment="menu">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" th:class="${navstate == 0}? 'active' : ''"><a href="/feed"><span class="glyphicon glyphicon-home"></span> Timeline</a></li>
+            <li role="presentation" th:class="${navstate == 1}? 'active' : ''"><a href="/timeline"><span class="glyphicon glyphicon-globe"></span> Global</a></li>
+            <li role="presentation" th:class="${navstate == 2}? 'active' : ''"><a href="/user" th:href="'/user/' + ${username}"><span class="glyphicon glyphicon-user"></span> Me</a></li>
+            <li role="presentation"><a href="/logout"><span class="glyphicon glyphicon-off"></span> Log out</a></li>
+          </ul>
+        </nav>
+        <h3 class="text-muted">Hi <span th:text="${username}"></span>!</h3>
+      </div>
+
+  </body>
+</html>

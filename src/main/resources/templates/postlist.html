@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+      <div th:fragment="postlist">
+         <div class="card post" th:each="entry : ${timeline.entries}">
+              <div class="row">
+                  <div class="col-xs-3 text-center">
+                      <a href="/timeline" th:href="'/user/' + ${entry.value.username}">
+                          <div class="user-img"><img src="/img/memes/0.jpg" th:src="'/img/memes/' + ${entry.value.getImageNumber()} + '.jpg'" /></div>
+                          <div class="user-name"><span th:text="${entry.value.username}"></span></div>
+                      </a>
+                  </div>
+                  <div class="col-xs-9">
+                      <p class="lead" th:text="${entry.key.content}"></p>
+                      <time datetime="2007-08-29T13:58Z" class="initialism" th:attr="datetime=${entry.key.timestamp}" th:text="${entry.key.timestamp}"></time>
+                  </div>
+              </div>
+          </div>
+
+          <div class="text-center clearfix">
+              <div th:class="${timeline.page == 1}? 'hidden' : 'show'" >
+                  <a class="btn btn-default pull-left" href="/timeline" th:href="'/timeline?page=' + ${timeline.page - 1}">Load newer posts</a>
+              </div>
+              <div th:class="${timeline.entries.size() == 0}? 'hidden' : 'show'" >
+                  <a class="btn btn-default pull-right" href="/timeline" th:href="'/timeline?page=' + ${timeline.page + 1}">Load older posts</a>
+              </div>
+          </div>
+      </div>
+  </body>
+</html>

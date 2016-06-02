@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <body>
+
+      <div th:class="${user}? 'hidden' : 'show card major'" id="userinfo">
+          <div id="profile-infos">
+          	<div class="profile-img-area text-center">
+                  <a href="#">
+                      <div class="user-img"><img src="/img/memes/0.jpg" th:src="'/img/memes/' + ${user.getImageNumber()} + '.jpg'" /></div>
+                  </a>
+             </div>
+             <div class="profile-info-area">
+             	<span th:text="${user.firstname}"></span> <span th:text="${user.lastname}"></span><br/>
+             	<span class="alias">alias</span><br/>
+             	<span class="profile-user-name" th:text="${user.username}"></span>
+
+                <div th:class="${user.username.equals(username)}? 'hidden' : 'show text-center'" >
+                    <a class="btn btn-primary" href="/follow" th:href="'/follow?user=' + ${user.username}">Follow</a>
+                </div>
+
+             </div>
+          </div>
+      </div>
+
+  </body>
+</html>

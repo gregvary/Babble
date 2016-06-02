@@ -26,28 +26,37 @@ public class LoginController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String showLogin(Model model) {
-		if(!SimpleSecurity.isSignedIn()) {
+		if (!SimpleSecurity.isSignedIn()) {
 			model.addAttribute("login", new Login());
 			return "login";
 		}
-		
-		return "redirect:/timeline";
+
+		return "redirect:/feed";
 	}
-	
-	@RequestMapping(value = "/", method = RequestMethod.POST)
+
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(@ModelAttribute("login") @Valid Login login, HttpServletResponse response, Model model) {
-		String hashedPassword = SecurityUtil.getUserPasswordHashed(login.getPassword(), login.getUsername());
-		if (loginRepository.auth(login.getUsername(), hashedPassword)) {
-			String auth = loginRepository.addAuth(login.getUsername(), SecurityUtil.TIMEOUT.getSeconds(), SecurityUtil.TIME_UNIT);
-			Cookie cookie = new Cookie("auth", auth);
-			response.addCookie(cookie);
-			return "redirect:/timeline";
-		}
+		if (!isLoginValid(login.getUsername(), login.getPassword()))
+			return "redirect:/";
 		
-		model.addAttribute("login", new Login());
-		return "login";
+		response.addCookie(createAuthCookie(login.getUsername()));
+		return "redirect:/feed";
+
 	}
 	
+	private boolean isLoginValid(String username, String password) {
+		String hashedPassword = SecurityUtil.getUserPasswordHashed(password, username);
+		return loginRepository.auth(username, hashedPassword);
+	}
+
+	private Cookie createAuthCookie(String username) {
+		String auth = loginRepository.addAuth(username, SecurityUtil.TIMEOUT.getSeconds(),
+				SecurityUtil.TIME_UNIT);
+		Cookie cookie = new Cookie("auth", auth);
+		cookie.setMaxAge((int) SecurityUtil.TIMEOUT.getSeconds());
+		return cookie;
+	}
+
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout() {
 		if (SimpleSecurity.isSignedIn()) {
@@ -57,7 +66,7 @@ public class LoginController {
 		}
 		return "redirect:/";
 	}
-	
+
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String showRegister(Model model) {
 		model.addAttribute("user", new User());
@@ -68,10 +77,8 @@ public class LoginController {
 	public String registerUser(@ModelAttribute User user, HttpServletResponse response, Model model) {
 		user.setPassword(SecurityUtil.getUserPasswordHashed(user.getPassword(), user.getUsername()));
 		userRepository.saveUser(user);
-		String auth = loginRepository.addAuth(user.getUsername(), SecurityUtil.TIMEOUT.getSeconds(), SecurityUtil.TIME_UNIT);
-		Cookie cookie = new Cookie("auth", auth);
-		response.addCookie(cookie);
-		return "redirect:/timeline";
+		response.addCookie(createAuthCookie(user.getUsername()));
+		return "redirect:/feed";
 	}
 
 }
